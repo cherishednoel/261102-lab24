@@ -29,6 +29,66 @@ ComplexNumber ComplexNumber::operator-(const ComplexNumber &c){
 }
 
 //Write your code here
+ComplexNumber operator+(double x, ComplexNumber c) {
+	return ComplexNumber(x+c.real, c.imag);
+}
+
+ComplexNumber operator-(double x, ComplexNumber c) {
+	return ComplexNumber(x-c.real, -c.imag);
+}
+
+ComplexNumber ComplexNumber::operator*(const ComplexNumber &c) {
+	return ComplexNumber(real*c.real-imag*c.imag, real*c.imag+imag*c.real);
+}
+
+ComplexNumber operator*(double x, ComplexNumber c) {
+	return ComplexNumber(x*c.real, x*c.imag);
+}
+
+ComplexNumber ComplexNumber::operator/(const ComplexNumber &c) {
+	return ComplexNumber((real*c.real+imag*c.imag)/(pow(c.real,2)+pow(c.imag,2)), (imag*c.real-real*c.imag)/(pow(c.real,2)+pow(c.imag,2)));
+}
+
+ComplexNumber operator/(double x, ComplexNumber c) {
+	return ComplexNumber((x*c.real)/(pow(c.real,2)+pow(c.imag,2)), (-x*c.imag)/(pow(c.real,2)+pow(c.imag,2)));
+}
+
+bool ComplexNumber::operator==(const ComplexNumber &c){
+	if(real == c.real && imag == c.imag) return true;
+	else return false;
+}
+
+bool operator==(double x, ComplexNumber c) {
+	if(x == c.real && c.imag == 0) return true;
+	else return false;
+}
+
+double ComplexNumber::abs() {
+	return sqrt(pow(real,2)+pow(imag,2));
+}
+
+double ComplexNumber::angle() {
+	if(real == 0 && imag == 0) return 0;
+	else if(real == 0 && imag > 0) return 90;
+	else if(real == 0 && imag < 0) return -90;
+	else if(real > 0 && imag == 0) return 0;
+	else if(real < 0 && imag == 0) return 180;
+	else if(real > 0 && imag > 0) return atan(imag/real)*180/M_PI;
+	else if(real < 0 && imag > 0) return (atan(imag/real)+M_PI)*180/M_PI;
+	else if(real < 0 && imag < 0) return (atan(imag/real)-M_PI)*180/M_PI;
+	else if(real > 0 && imag < 0) return atan(imag/real)*180/M_PI;
+	else return 0;
+}
+
+ostream& operator<< (ostream &os, const ComplexNumber &c) {
+	string sign = (c.imag >= 0) && (c.real != 0) && (c.imag != 0) ? "+" : "";
+	if(c.real == 0 && c.imag == 0) os << 0;
+	else if(c.real == 0) os << c.imag << "i";
+	else if(c.imag == 0) os << c.real;
+	else os << c.real << sign << c.imag << "i";
+	return os;
+}
+
 
 int main(){
 	ComplexNumber a(1.5,2),b(3.2,-2.5),c(-1,1.2);	
@@ -69,9 +129,6 @@ int main(){
 	cout << (ComplexNumber(1,1) == ComplexNumber(1,2)) << "\n";
 	cout << (ComplexNumber(1,1) == 1) << "\n";
 	cout << (0 == ComplexNumber()) << "\n";
+
+	return 0;
 }
-
-
-
-
-
